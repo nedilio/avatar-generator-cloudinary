@@ -74,28 +74,30 @@ const UploadStep = () => {
           ""
         );
         const avatarURL = `https://res.cloudinary.com/dlrsxizob/image/upload/c_thumb,g_auto:face,h_300,w_300/r_max/f_webp/${image}`;
-        setFile({ preview: avatarURL });
+        setFile({ preview: avatarURL, avatar: true });
         console.log(avatarURL);
       })
       .catch((error) => console.log("error", error));
   };
   return (
     <form action="https://api.cloudinary.com/v1_1/dlrsxizob/upload">
-      <div
-        className={`border-dashed border-4 border-gray-300 rounded px-4 py-8 transition duration-200 ${
-          styles && styles
-        }`}
-      >
-        <div {...getRootProps({ className: "dropzone" })}>
-          <input id="file" {...getInputProps()} />
-          <p className="font-bold text-gray-500 text-2xl">
-            Drag 'n' drop your image here, or click to select file
-          </p>
-          <p className="font-semibold text-xs mt-6">
-            Only 1 file is accepted and must be jpg or png format
-          </p>
+      {!file && (
+        <div
+          className={`border-dashed border-4 border-gray-300 rounded px-4 py-8 transition duration-200 ${
+            styles && styles
+          }`}
+        >
+          <div {...getRootProps({ className: "dropzone" })}>
+            <input id="file" {...getInputProps()} />
+            <p className="font-bold text-gray-500 text-2xl">
+              Drag 'n' drop your image here, or click to select file
+            </p>
+            <p className="font-semibold text-xs mt-6">
+              Only 1 file is accepted and must be jpg or png format
+            </p>
+          </div>
         </div>
-      </div>
+      )}
       <aside>
         {acceptedFiles.length > 0 && (
           <div>
@@ -111,13 +113,25 @@ const UploadStep = () => {
                 }}
               />
             </div>
-            <button
-              className="bg-cyan-500 mt-8 text-gray-100 px-8 py-3 rounded-md"
-              onClick={(event) => handleUpload(event, acceptedFiles[0])}
-              type="submit"
-            >
-              Generate Avatar
-            </button>
+            {!file.avatar && (
+              <button
+                className="bg-cyan-500 mt-8 text-gray-100 px-8 py-3 rounded-md"
+                onClick={(event) => handleUpload(event, acceptedFiles[0])}
+                type="submit"
+              >
+                Generate Avatar
+              </button>
+            )}
+            {file.avatar && (
+              <a
+                download
+                href={file.preview}
+                target="_blank"
+                className="block bg-purple-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-purple-800"
+              >
+                Descargar Avatar
+              </a>
+            )}
           </div>
         )}
 

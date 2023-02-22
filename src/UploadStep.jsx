@@ -73,7 +73,7 @@ const UploadStep = () => {
           "https://res.cloudinary.com/dlrsxizob/image/upload/",
           ""
         );
-        const avatarURL = `https://res.cloudinary.com/dlrsxizob/image/upload/c_thumb,g_auto:face,h_300,w_300/r_max/f_webp/${image}`;
+        const avatarURL = `https://res.cloudinary.com/dlrsxizob/image/upload/c_thumb,g_face,h_300,w_300/r_max/f_webp/${image}`;
         setFile({ preview: avatarURL, avatar: true });
       })
       .catch((error) => console.log("error", error));

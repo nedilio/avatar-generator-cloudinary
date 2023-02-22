@@ -78,6 +78,11 @@ const UploadStep = () => {
       })
       .catch((error) => console.log("error", error));
   };
+
+  const handleCleanFiles = (e) => {
+    e.preventDefault();
+    setFile(null);
+  };
   return (
     <form action="https://api.cloudinary.com/v1_1/dlrsxizob/upload">
       {!file && (
@@ -98,7 +103,7 @@ const UploadStep = () => {
         </div>
       )}
       <aside>
-        {acceptedFiles.length > 0 && (
+        {file && (
           <div>
             <div className="w-40 h-40 mx-auto mt-4">
               <img
@@ -122,14 +127,22 @@ const UploadStep = () => {
               </button>
             )}
             {file.avatar && (
-              <a
-                download
-                href={file.preview}
-                target="_blank"
-                className="block bg-purple-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-purple-800"
-              >
-                Descargar Avatar
-              </a>
+              <div className="flex gap-2">
+                <a
+                  download
+                  href={file.preview}
+                  target="_blank"
+                  className="block w-2/3 bg-purple-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-purple-800"
+                >
+                  Descargar Avatar
+                </a>
+                <button
+                  className="block w-2/3 bg-red-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-red-800"
+                  onClick={handleCleanFiles}
+                >
+                  Back
+                </button>
+              </div>
             )}
           </div>
         )}

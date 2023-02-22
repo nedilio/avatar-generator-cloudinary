@@ -52,8 +52,8 @@ const UploadStep = () => {
     formData.append("file", file);
     formData.append("upload_preset", "avatar");
     formData.append("timestamp", Date.now() / 1000);
-    // formData.append("public_id", "dlrsxizob");
     formData.append("api_key", "777482994434729");
+    // formData.append("colors", true); no se puede unnsigned
 
     var requestOptions = {
       method: "POST",

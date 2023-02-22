@@ -134,7 +134,7 @@ const UploadStep = () => {
                   target="_blank"
                   className="block w-2/3 bg-purple-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-purple-800"
                 >
-                  Descargar Avatar
+                  DownloadAvatar
                 </a>
                 <button
                   className="block w-2/3 bg-red-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-red-800"

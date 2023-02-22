@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import CloudinaryLogo from "./CloudinaryLogo";
 import UploadStep from "./UploadStep";
 
 function App() {
@@ -23,6 +24,9 @@ function App() {
           by Nedilio
         </a>
         <UploadStep />
+        <p className="flex gap-2 mx-auto mt-4">
+          Created using: <CloudinaryLogo />
+        </p>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const Footer = () => {
       <p>
         to participate in{" "}
         <a
-          href="https://www.twitch.tv/midudev/schedule?vodID=1744886615"
+          href="https://www.twitch.tv/videos/1744886615"
           target="_blank"
           rel="noopener noreferrer"
           className="text-purple-500 hover:underline font-bold"

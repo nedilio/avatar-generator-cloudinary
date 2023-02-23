@@ -1,4 +1,24 @@
+import { Cloudinary } from "@cloudinary/url-gen";
+
+// Import required actions.
+import { thumbnail } from "@cloudinary/url-gen/actions/resize";
+// Import required qualifiers.
+import { focusOn } from "@cloudinary/url-gen/qualifiers/gravity";
+import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
+import { max } from "@cloudinary/url-gen/actions/roundCorners";
+import { format } from "@cloudinary/url-gen/actions/delivery";
+import { webp } from "@cloudinary/url-gen/qualifiers/format";
+
 const ProcessStep = ({ file, setFile }) => {
+  const cloudinary = new Cloudinary({
+    cloud: {
+      cloudName: "dlrsxizob",
+    },
+    url: {
+      secure: true,
+    },
+  });
+
   const handleUpload = (event, file) => {
     event.preventDefault();
     const formData = new FormData();
@@ -21,13 +41,21 @@ const ProcessStep = ({ file, setFile }) => {
       .then((response) => response.json())
       .then((res) => {
         // console.log(res);
-        const { secure_url } = res;
-        const image = secure_url.replace(
-          "https://res.cloudinary.com/dlrsxizob/image/upload/",
-          ""
-        );
-        const avatarURL = `https://res.cloudinary.com/dlrsxizob/image/upload/c_thumb,g_face,h_300,w_300/r_max/f_webp/${image}`;
-        setFile({ preview: avatarURL, avatar: true });
+        const { public_id: publicId, secure_url: url } = res;
+        const avatar = cloudinary
+          .image(publicId)
+          .resize(
+            thumbnail()
+              .width(250)
+              .height(250)
+              .gravity(focusOn(FocusOn.face()))
+              .zoom(0.8)
+          ) // Crop the image.
+          .roundCorners(max())
+          .delivery(format(webp()))
+          .toURL();
+
+        setFile({ preview: avatar, avatar: true });
       })
       .catch((error) => console.log("error", error));
   };
@@ -48,7 +76,6 @@ const ProcessStep = ({ file, setFile }) => {
           width={160}
           onLoad={() => {
             URL.revokeObjectURL(file.preview);
-            console.log(file);
           }}
         />
       </div>
@@ -64,7 +91,7 @@ const ProcessStep = ({ file, setFile }) => {
       {file.avatar && (
         <div className="flex gap-2">
           <a
-            download
+            download={file.preview}
             href={file.preview}
             target="_blank"
             className="block w-2/3 bg-purple-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-purple-800"

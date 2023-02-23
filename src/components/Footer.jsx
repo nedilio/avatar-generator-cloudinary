@@ -7,7 +7,18 @@ const Footer = () => {
         Created using: <CloudinaryLogo className="inline-block" />
       </p>
 
-      <p>to participate in midudev hackaton</p>
+      <p>
+        to participate in{" "}
+        <a
+          href="https://www.twitch.tv/midudev/schedule?vodID=1744886615"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-purple-500 hover:underline font-bold"
+        >
+          midudev's
+        </a>{" "}
+        cloudinary hackaton
+      </p>
     </footer>
   );
 };

@@ -8,8 +8,16 @@ import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
 import { max } from "@cloudinary/url-gen/actions/roundCorners";
 import { format } from "@cloudinary/url-gen/actions/delivery";
 import { webp } from "@cloudinary/url-gen/qualifiers/format";
+import { useState } from "react";
+import CogIcon from "./icons/CogIcon";
+import DownloadIcon from "./icons/DownloadIcon";
+import BackIcon from "./icons/BackIcon";
+
+import "./ProcessStep.css";
 
 const ProcessStep = ({ file, setFile }) => {
+  const [processingImage, setProcessingImage] = useState(false);
+
   const cloudinary = new Cloudinary({
     cloud: {
       cloudName: "dlrsxizob",
@@ -20,6 +28,7 @@ const ProcessStep = ({ file, setFile }) => {
   });
 
   const handleUpload = (event, file) => {
+    setProcessingImage(true);
     event.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
@@ -55,7 +64,9 @@ const ProcessStep = ({ file, setFile }) => {
           .delivery(format(webp()))
           .toURL();
 
-        setFile({ preview: avatar, avatar: true });
+        setFile({ preview: avatar, avatar: true }).then(
+          setProcessingImage(false)
+        );
       })
       .catch((error) => console.log("error", error));
   };
@@ -81,11 +92,18 @@ const ProcessStep = ({ file, setFile }) => {
       </div>
       {!file.avatar && (
         <button
-          className="bg-cyan-500 mt-8 text-gray-100 px-8 py-3 rounded-md"
+          className="bg-cyan-500 mt-8 text-gray-100 px-8 py-3 rounded-md flex mx-auto gap-1 justify-center items-center"
           onClick={(event) => handleUpload(event, file)}
           type="submit"
         >
-          Generate Avatar
+          <span
+            className={`${
+              processingImage ? "animate scale-125" : null
+            } scale-110`}
+          >
+            <CogIcon />
+          </span>
+          <strong className="">Generate Avatar</strong>
         </button>
       )}
       {file.avatar && (
@@ -94,15 +112,15 @@ const ProcessStep = ({ file, setFile }) => {
             download={file.preview}
             href={file.preview}
             target="_blank"
-            className="block w-2/3 bg-purple-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-purple-800"
+            className="flex justify-center items-center gap-2 w-2/3 bg-purple-500 text-slate-50 px-8 py-2 mt-8 rounded-md transition duration-150 hover:bg-purple-800"
           >
-            DownloadAvatar
+            <DownloadIcon /> DownloadAvatar
           </a>
           <button
-            className="block w-2/3 bg-red-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-red-800"
+            className="flex justify-center items-center gap-2 w-2/3 bg-red-500 text-slate-50 px-8 py-4 mt-8 rounded-md transition duration-150 hover:bg-red-800"
             onClick={handleCleanFiles}
           >
-            Back
+            <BackIcon /> Back
           </button>
         </div>
       )}

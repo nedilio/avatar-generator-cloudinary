@@ -1,0 +1,19 @@
+.animate {
+  animation-delay: -0.15s;
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate svg {
+  transform: scale(1.2) !important;
+}

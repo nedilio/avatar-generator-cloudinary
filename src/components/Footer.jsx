@@ -4,7 +4,14 @@ const Footer = () => {
   return (
     <footer className="font-semibold flex flex-col items-center justify-center mt-4 gap-y-1">
       <p className="">
-        Created using: <CloudinaryLogo className="inline-block" />
+        Created using:{" "}
+        <a
+          href="https://cloudinary.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <CloudinaryLogo />
+        </a>
       </p>
 
       <p>

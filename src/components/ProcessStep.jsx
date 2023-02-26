@@ -14,6 +14,7 @@ import DownloadIcon from "./icons/DownloadIcon";
 import BackIcon from "./icons/BackIcon";
 
 import "./ProcessStep.css";
+import { useEffect } from "react";
 
 const ProcessStep = ({ file, setFile }) => {
   const [processingImage, setProcessingImage] = useState(false);
@@ -49,7 +50,7 @@ const ProcessStep = ({ file, setFile }) => {
     )
       .then((response) => response.json())
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         const { public_id: publicId, secure_url: url } = res;
         const avatar = cloudinary
           .image(publicId)
@@ -64,9 +65,7 @@ const ProcessStep = ({ file, setFile }) => {
           .delivery(format(webp()))
           .toURL();
 
-        setFile({ preview: avatar, avatar: true }).then(
-          setProcessingImage(false)
-        );
+        setFile({ preview: avatar, avatar: true });
       })
       .catch((error) => console.log("error", error));
   };
@@ -75,6 +74,12 @@ const ProcessStep = ({ file, setFile }) => {
     e.preventDefault();
     setFile(null);
   };
+
+  useEffect(() => {
+    if (file.avatar) {
+      setProcessingImage(false);
+    }
+  }, [file]);
 
   return (
     <section>
@@ -103,7 +108,7 @@ const ProcessStep = ({ file, setFile }) => {
           >
             <CogIcon />
           </span>
-          <strong className="">Generate Avatar</strong>
+          <strong className="font-semibold">Generate Avatar</strong>
         </button>
       )}
       {file.avatar && (

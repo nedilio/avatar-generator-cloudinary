@@ -15,10 +15,12 @@ import BackIcon from "./icons/BackIcon";
 
 import "./ProcessStep.css";
 import { useEffect } from "react";
+import IsPerson from "./IsPerson";
 
 const ProcessStep = ({ file, setFile }) => {
   const [processingImage, setProcessingImage] = useState(false);
-
+  const [isPerson, SetIsPerson] = useState(undefined);
+  const [tagsArray, SetTagsArray] = useState([]);
   const cloudinary = new Cloudinary({
     cloud: {
       cloudName: "dlrsxizob",
@@ -33,10 +35,9 @@ const ProcessStep = ({ file, setFile }) => {
     event.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "avatar");
+    formData.append("upload_preset", "avatar_ai");
     formData.append("timestamp", Date.now() / 1000);
     formData.append("api_key", "777482994434729");
-    // formData.append("colors", true); no se puede unnsigned
 
     var requestOptions = {
       method: "POST",
@@ -51,7 +52,19 @@ const ProcessStep = ({ file, setFile }) => {
       .then((response) => response.json())
       .then((res) => {
         console.log(res);
-        const { public_id: publicId, secure_url: url } = res;
+        const {
+          public_id: publicId,
+          info: {
+            detection: {
+              object_detection: {
+                data: {
+                  coco: { tags },
+                },
+              },
+            },
+          },
+        } = res;
+
         const avatar = cloudinary
           .image(publicId)
           .resize(
@@ -66,6 +79,10 @@ const ProcessStep = ({ file, setFile }) => {
           .toURL();
 
         setFile({ preview: avatar, avatar: true });
+        const tagsArray = Object.keys(tags);
+        SetTagsArray(tagsArray);
+        console.log(tagsArray);
+        SetIsPerson(tagsArray.includes("person"));
       })
       .catch((error) => console.log("error", error));
   };
@@ -73,6 +90,8 @@ const ProcessStep = ({ file, setFile }) => {
   const handleCleanFiles = (e) => {
     e.preventDefault();
     setFile(null);
+    SetIsPerson(undefined);
+    SetTagsArray([]);
   };
 
   useEffect(() => {
@@ -127,6 +146,13 @@ const ProcessStep = ({ file, setFile }) => {
           >
             <BackIcon /> Back
           </button>
+        </div>
+      )}
+      {isPerson != undefined && tagsArray.length >= 1 ? (
+        <IsPerson isPerson={isPerson} tags={tagsArray} />
+      ) : (
+        <div className="p-2 mt-2 bg-purple-600 font-bold text-slate-100 rounded-md">
+          I could not determine what are you?
         </div>
       )}
     </section>

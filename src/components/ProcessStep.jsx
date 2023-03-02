@@ -151,9 +151,12 @@ const ProcessStep = ({ file, setFile }) => {
       {isPerson != undefined && tagsArray.length >= 1 ? (
         <IsPerson isPerson={isPerson} tags={tagsArray} />
       ) : (
-        <div className="p-2 mt-2 bg-purple-600 font-bold text-slate-100 rounded-md">
-          I could not determine what are you?
-        </div>
+        isPerson != undefined &&
+        tagsArray.length === 0 && (
+          <div className="p-2 mt-2 bg-purple-600 font-bold text-slate-100 rounded-md">
+            I could not determine what are you?
+          </div>
+        )
       )}
     </section>
   );

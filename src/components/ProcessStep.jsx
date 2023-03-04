@@ -37,7 +37,7 @@ const ProcessStep = ({ file, setFile }) => {
     formData.append("file", file);
     formData.append("upload_preset", "avatar_ai");
     formData.append("timestamp", Date.now() / 1000);
-    formData.append("api_key", "777482994434729");
+    formData.append("api_key", import.meta.env.VITE_API_KEY);
 
     var requestOptions = {
       method: "POST",
@@ -51,7 +51,6 @@ const ProcessStep = ({ file, setFile }) => {
     )
       .then((response) => response.json())
       .then((res) => {
-        console.log(res);
         const {
           public_id: publicId,
           info: {
@@ -81,10 +80,9 @@ const ProcessStep = ({ file, setFile }) => {
         setFile({ preview: avatar, avatar: true });
         const tagsArray = Object.keys(tags);
         SetTagsArray(tagsArray);
-        console.log(tagsArray);
         SetIsPerson(tagsArray.includes("person"));
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.error("error", error));
   };
 
   const handleCleanFiles = (e) => {
